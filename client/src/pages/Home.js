@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
+import './pages.css';
 
 import { addSearchTerm } from "../actions";
 import { connect } from "react-redux";
@@ -29,12 +30,16 @@ class Home extends Component {
     });
   };
 
-  getArticles = () => {
+  getArticles = (savedTerm) => {
     let { dispatch } = this.props;
-    let { message } = this.state;
-    const { searchTerm, hitsPerPage, page, tags } = this.state;
+    let { message, searchTerm } = this.state;
+    const { hitsPerPage, page, tags } = this.state;
 
-    dispatch(addSearchTerm(searchTerm));
+    if (savedTerm) {
+      searchTerm = savedTerm;
+    } else {
+      dispatch(addSearchTerm(searchTerm));
+    }
 
     API.getArticles(searchTerm, hitsPerPage, page, tags)
       .then(res => {
@@ -89,6 +94,9 @@ class Home extends Component {
     const { searchTerms } = this.props;
     const { page, hitsPerPage, info } = this.state;
     const { nbPages, nbHits } = info;
+    let temp = [ ...searchTerms ];
+    let displayedSearchTerms = temp.reverse();
+    console.log(displayedSearchTerms);
     return (
       <Container>
         <Row>
@@ -108,6 +116,15 @@ class Home extends Component {
                 handleFrontPageSubmit={this.handleFrontPageSubmit}
                 searchTerm={this.state.searchTerm}
               />
+              {/* TO DO: Put badges in Form component */}
+              <label id="recent" htmlFor="Search Term">
+                <strong>Recent Searches:</strong>
+              </label>
+              <a href="#" class="badge badge-primary" onClick={() => this.getArticles(displayedSearchTerms[0])}>{displayedSearchTerms[0]}</a>
+              <a href="#" class="badge badge-secondary" onClick={() => this.getArticles(displayedSearchTerms[1])}>{displayedSearchTerms[1]}</a>
+              <a href="#" class="badge badge-success" onClick={() => this.getArticles(displayedSearchTerms[2])}>{displayedSearchTerms[2]}</a>
+              <a href="#" class="badge badge-danger" onClick={() => this.getArticles(displayedSearchTerms[3])}>{displayedSearchTerms[3]}</a>
+              <a href="#" class="badge badge-warning" onClick={() => this.getArticles(displayedSearchTerms[4])}>{displayedSearchTerms[4]}</a>
             </Card>
           </Col>
         </Row>
