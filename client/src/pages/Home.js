@@ -96,7 +96,6 @@ class Home extends Component {
     const { nbPages, nbHits } = info;
     let temp = [ ...searchTerms ];
     let displayedSearchTerms = temp.reverse();
-    console.log(displayedSearchTerms);
     return (
       <Container>
         <Row>
