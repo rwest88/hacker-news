@@ -33,7 +33,6 @@ module.exports = {
   },
   // findById finds and serves a single article which contains a tree of comments
   findById: function(req, res) {
-    console.log(req.params)
     axios
       .get("http://hn.algolia.com/api/v1/items/" + req.params.id)
       .then(result => res.json(result.data))
