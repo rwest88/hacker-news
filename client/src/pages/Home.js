@@ -9,8 +9,8 @@ import API from "../utils/API";
 import { Col, Row, Container } from "../components/Grid";
 import { List } from "../components/List";
 
-// import { addSearchTerm } from "../actions";
-// import { connect } from "react-redux";
+import { addSearchTerm } from "../actions";
+import { connect } from "react-redux";
 
 class Home extends Component {
   state = {
@@ -34,7 +34,7 @@ class Home extends Component {
     let { message } = this.state;
     const { searchTerm, hitsPerPage, page, tags } = this.state;
 
-    // dispatch(addSearchTerm(searchTerm));
+    dispatch(addSearchTerm(searchTerm));
 
     API.getArticles(searchTerm, hitsPerPage, page, tags)
       .then(res => {
@@ -86,7 +86,7 @@ class Home extends Component {
   toPage = page => this.setState({ page }, () => this.getArticles());
 
   render() {
-    // const { searchTerms } = this.props;
+    const { searchTerms } = this.props;
     const { page, hitsPerPage, info } = this.state;
     const { nbPages, nbHits } = info;
     return (
@@ -154,9 +154,8 @@ class Home extends Component {
   }
 }
 
-// const mapStateToProps = state => ({
-//   searchTerms: state.searchTerms.allSearchTerms,
-// });
+const mapStateToProps = state => ({
+  searchTerms: state.searchTerms.allSearchTerms,
+});
 
-// export default connect(mapStateToProps)(Home);
-export default Home;
+export default connect(mapStateToProps)(Home);
